@@ -3,6 +3,9 @@ package com.example.url_shortener.repository;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class UrlRepository {
 
     private final Map<String, String> urls = new HashMap<>();
