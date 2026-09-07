@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.url_shortener.model.Url;
 
-public interface UrlRepository extends JpaRepository<Url, Long> {
-
+public interface UrlRepository extends JpaRepository<Url, String> {
     Optional<Url> findByShortCode(String shortCode);
 }

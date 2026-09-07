@@ -6,6 +6,7 @@ import java.util.Random;
 import org.springframework.stereotype.Service;
 
 import com.example.url_shortener.model.Url;
+import com.example.url_shortener.model.Url;
 import com.example.url_shortener.repository.UrlRepository;
 
 @Service
@@ -22,6 +23,8 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
+    public void saveUrl(Url url) {
+        urlRepository.save(url);
     public void saveUrl(Url url) {
         urlRepository.save(url);
     }
