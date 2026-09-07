@@ -12,6 +12,11 @@ public class Url {
     private String shortCode;
     private String originalUrl;
 
+    @Override
+    public String toString() {
+        return originalUrl;
+    }
+
     public Long getId() {
         return id;
     }

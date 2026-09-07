@@ -1,22 +1,12 @@
 package com.example.url_shortener.repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class UrlRepository {
+import com.example.url_shortener.model.Url;
 
-    private final Map<String, String> urls = new HashMap<>();
+public interface UrlRepository extends JpaRepository<Url, Long> {
 
-    public void save(String shortCode, String url) {
-        // Implementation for saving the short code and URL mapping to a database
-        urls.put(shortCode, url);
-    }
-
-    public String find(String shortCode) {
-        // Implementation for retrieving the original URL based on the short code from a database
-        return urls.get(shortCode);
-    }
+    Optional<Url> findByShortCode(String shortCode);
 }
