@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
+import com.example.url_shortener.model.Url;
 import com.example.url_shortener.repository.UrlRepository;
 
 @Service
@@ -18,8 +19,8 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
-    public void saveUrl(String shortCode, String url) {
-        urlRepository.save(shortCode, url);
+    public void saveUrl(Url url) {
+        urlRepository.save(url);
     }
 
     public String createShortCode(String url) {
@@ -28,11 +29,14 @@ public class UrlService {
             int index = random.nextInt(characters.length());
             shortCode.append(characters.charAt(index));
         }
-        saveUrl(shortCode.toString(), url);
+        Url newUrl = new Url();
+        newUrl.setShortCode(shortCode.toString());
+        newUrl.setOriginalUrl(url);
+        saveUrl(newUrl);
         return shortCode.toString();
     }
     
-    public String getOriginalUrl(String shortCode) {
-        return urlRepository.find(shortCode);
+    public Url getOriginalUrl(String shortCode) {
+        return urlRepository.findByShortCode(shortCode).orElse(null);
     }
 }

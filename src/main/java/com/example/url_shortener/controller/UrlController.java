@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.url_shortener.model.Url;
 import com.example.url_shortener.service.UrlService;
 
 @RestController
@@ -25,12 +26,12 @@ public class UrlController {
 
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
-        String originalUrl = urlService.getOriginalUrl(shortCode);
-        if (originalUrl == null) {
+        Url url = urlService.getOriginalUrl(shortCode);
+        if (url == null) {
             return ResponseEntity.notFound().build();
         }
         
-        return ResponseEntity.status(302).header("Location", originalUrl).build();
+        return ResponseEntity.status(302).header("Location", url.getOriginalUrl()).build();
     }
 
 }
