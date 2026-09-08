@@ -1,5 +1,6 @@
 package com.example.url_shortener.service;
 
+import java.net.URI;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
@@ -10,7 +11,9 @@ import com.example.url_shortener.repository.UrlRepository;
 @Service
 public class UrlService {
 
-    private final String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private final String characters =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     private final Random random = new Random();
 
     private final UrlRepository urlRepository;
@@ -24,19 +27,41 @@ public class UrlService {
     }
 
     public String createShortCode(String url) {
+
+        if (!isValidUrl(url)) {
+            throw new IllegalArgumentException("URL must use http or https and contain a valid host");
+        }
+
         StringBuilder shortCode = new StringBuilder();
+
         for (int i = 0; i < 6; i++) {
             int index = random.nextInt(characters.length());
             shortCode.append(characters.charAt(index));
         }
+
         Url newUrl = new Url();
         newUrl.setShortCode(shortCode.toString());
         newUrl.setOriginalUrl(url);
+
         saveUrl(newUrl);
+
         return shortCode.toString();
     }
-    
+
     public Url getOriginalUrl(String shortCode) {
         return urlRepository.findByShortCode(shortCode).orElse(null);
+    }
+
+    public boolean isValidUrl(String url) {
+        try {
+            URI uri = URI.create(url);
+
+            return ("http".equalsIgnoreCase(uri.getScheme())
+                    || "https".equalsIgnoreCase(uri.getScheme()))
+                    && uri.getHost() != null;
+
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
