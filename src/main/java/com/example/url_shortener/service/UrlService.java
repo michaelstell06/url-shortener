@@ -39,6 +39,10 @@ public class UrlService {
             shortCode.append(characters.charAt(index));
         }
 
+        if (urlRepository.findByShortCode(shortCode.toString()).isPresent()) {
+            return createShortCode(url);
+        }
+
         Url newUrl = new Url();
         newUrl.setShortCode(shortCode.toString());
         newUrl.setOriginalUrl(url);
