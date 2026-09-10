@@ -26,16 +26,19 @@ public class UrlController {
     @PostMapping("/urls")
     public UrlResponse createUrl(@RequestBody UrlRequest request) {
         String shortCode = urlService.createShortCode(request.getUrl());
+
         UrlResponse response = new UrlResponse();
         response.setShortCode(shortCode);
         response.setOriginalUrl(request.getUrl());
         response.setShortUrl(baseUrl + "/" + shortCode);
+
         return response;
     }
 
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
         Url originalUrl = urlService.getOriginalUrl(shortCode);
+        
         if (originalUrl == null) {
             return ResponseEntity.notFound().build();
         }
