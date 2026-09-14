@@ -25,12 +25,12 @@ public class UrlController {
 
     @PostMapping("/urls")
     public UrlResponse createUrl(@RequestBody UrlRequest request) {
-        String shortCode = urlService.createShortCode(request.getUrl());
-
+        String shortCode = urlService.createShortCode(request);
         UrlResponse response = new UrlResponse();
         response.setShortCode(shortCode);
         response.setOriginalUrl(request.getUrl());
         response.setShortUrl(baseUrl + "/" + shortCode);
+        response.setExpiresAt(request.getExpiresAt());
 
         return response;
     }
@@ -38,12 +38,12 @@ public class UrlController {
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
         Url originalUrl = urlService.getOriginalUrl(shortCode);
-        
+
         if (originalUrl == null) {
             return ResponseEntity.notFound().build();
         }
-        
-        return ResponseEntity.status(302).header("Location", originalUrl.toString()).build();
+
+        return ResponseEntity.status(302).header("Location", originalUrl.getOriginalUrl()).build();
     }
 
 }

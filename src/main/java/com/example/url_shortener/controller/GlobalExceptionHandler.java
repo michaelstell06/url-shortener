@@ -1,5 +1,6 @@
 package com.example.url_shortener.controller;
 
+import com.example.url_shortener.exception.UrlExpiredException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,5 +16,15 @@ public class GlobalExceptionHandler {
         error.setMessage(exception.getMessage());
 
         return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(UrlExpiredException.class)
+    public ResponseEntity<ErrorResponse> handleUrlExpiredException(UrlExpiredException exception) {
+
+        ErrorResponse error = new ErrorResponse();
+        error.setError("URL Expired");
+        error.setMessage(exception.getMessage());
+
+        return ResponseEntity.status(410).body(error);
     }
 }

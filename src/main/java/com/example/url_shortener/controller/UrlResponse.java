@@ -1,9 +1,11 @@
 package com.example.url_shortener.controller;
+import java.time.LocalDateTime;
 
 public class UrlResponse {
     private String shortCode;
     private String originalUrl;
     private String shortUrl;
+    private LocalDateTime expiresAt;
 
     public String getShortCode() {
         return shortCode;
@@ -27,5 +29,13 @@ public class UrlResponse {
 
     public void setShortUrl(String shortUrl) {
         this.shortUrl = shortUrl;
+    }
+
+    public LocalDateTime getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(LocalDateTime expiresAt) {
+        this.expiresAt = expiresAt;
     }
 }

@@ -1,4 +1,6 @@
 package com.example.url_shortener.model;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +17,8 @@ public class Url {
     private String shortCode;
 
     private String originalUrl;
+
+    private LocalDateTime expiresAt;
 
     @Override
     public String toString() {
@@ -43,5 +47,13 @@ public class Url {
 
     public void setOriginalUrl(String originalUrl) {
         this.originalUrl = originalUrl;
+    }
+
+    public LocalDateTime getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(LocalDateTime expiresAt) {
+        this.expiresAt = expiresAt;
     }
 }
