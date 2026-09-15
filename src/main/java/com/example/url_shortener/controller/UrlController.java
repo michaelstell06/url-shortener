@@ -1,6 +1,7 @@
 package com.example.url_shortener.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.url_shortener.model.Url;
 import com.example.url_shortener.service.UrlService;
+
+import jakarta.validation.Valid;
 
 @RestController
 public class UrlController {
@@ -24,7 +27,7 @@ public class UrlController {
     }
 
     @PostMapping("/urls")
-    public UrlResponse createUrl(@RequestBody UrlRequest request) {
+    public ResponseEntity<UrlResponse> createUrl(@RequestBody @Valid UrlRequest request) {
         String shortCode = urlService.createShortCode(request);
         UrlResponse response = new UrlResponse();
         response.setShortCode(shortCode);
@@ -32,7 +35,7 @@ public class UrlController {
         response.setShortUrl(baseUrl + "/" + shortCode);
         response.setExpiresAt(request.getExpiresAt());
 
-        return response;
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{shortCode}")

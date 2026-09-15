@@ -2,9 +2,12 @@ package com.example.url_shortener.controller;
 
 import java.time.LocalDateTime;
 
-public class UrlRequest {
+import jakarta.validation.constraints.NotBlank;
 
+public class UrlRequest {
+    @NotBlank(message = "URL cannot be blank")
     private String url;
+
     private LocalDateTime expiresAt;
 
     public String getUrl() {

@@ -78,6 +78,10 @@ public class UrlService {
 
     public boolean isValidUrl(String url) {
         try {
+            if (url == null || url.isEmpty()) {
+                return false;
+            }
+
             URI uri = URI.create(url);
 
             return ("http".equalsIgnoreCase(uri.getScheme())
