@@ -49,4 +49,21 @@ public class UrlController {
         return ResponseEntity.status(302).header("Location", originalUrl.getOriginalUrl()).build();
     }
 
+    @GetMapping("/urls/{shortCode}")
+    public ResponseEntity<UrlResponse> getUrlDetails(@PathVariable String shortCode) {
+        Url url = urlService.getOriginalUrl(shortCode);
+
+        if (url == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        UrlResponse response = new UrlResponse();
+        response.setShortCode(url.getShortCode());
+        response.setOriginalUrl(url.getOriginalUrl());
+        response.setShortUrl(baseUrl + "/" + url.getShortCode());
+        response.setExpiresAt(url.getExpiresAt());
+
+        return ResponseEntity.ok(response);
+    }
+
 }
