@@ -19,7 +19,6 @@ public class UrlController {
 
     @Value("${app.base-url}")
     private String baseUrl;
-
     private final UrlService urlService;
 
     public UrlController(UrlService urlService) {
@@ -51,17 +50,17 @@ public class UrlController {
 
     @GetMapping("/urls/{shortCode}")
     public ResponseEntity<UrlResponse> getUrlDetails(@PathVariable String shortCode) {
-        Url url = urlService.getOriginalUrl(shortCode);
+        Url urlInfo = urlService.getUrlInfo(shortCode);
 
-        if (url == null) {
+        if (urlInfo == null) {
             return ResponseEntity.notFound().build();
         }
 
         UrlResponse response = new UrlResponse();
-        response.setShortCode(url.getShortCode());
-        response.setOriginalUrl(url.getOriginalUrl());
-        response.setShortUrl(baseUrl + "/" + url.getShortCode());
-        response.setExpiresAt(url.getExpiresAt());
+        response.setShortCode(urlInfo.getShortCode());
+        response.setOriginalUrl(urlInfo.getOriginalUrl());
+        response.setShortUrl(baseUrl + "/" + urlInfo.getShortCode());
+        response.setExpiresAt(urlInfo.getExpiresAt());
 
         return ResponseEntity.ok(response);
     }

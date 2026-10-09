@@ -97,4 +97,11 @@ public class UrlService {
         return expiresAt == null
                 || !expiresAt.isBefore(java.time.LocalDateTime.now());
     }
+
+    public Url getUrlInfo(String shortCode) {
+        Url url = urlRepository.findByShortCode(shortCode).orElse(null);
+
+        return url;
+    }
+
 }
